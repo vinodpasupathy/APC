@@ -1,0 +1,47 @@
+current directory: /home/ubuntu/APC/vendor/bundle/ruby/2.3.0/gems/therubyracer-0.12.2/ext/v8
+/home/ubuntu/.rvm/rubies/ruby-2.3.1/bin/ruby -r ./siteconf20160617-496-1n6v0xd.rb extconf.rb
+checking for main() in -lpthread... yes
+creating Makefile
+
+To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+  /home/ubuntu/APC/vendor/bundle/ruby/2.3.0/extensions/x86_64-linux/2.3.0/therubyracer-0.12.2/mkmf.log
+
+current directory: /home/ubuntu/APC/vendor/bundle/ruby/2.3.0/gems/therubyracer-0.12.2/ext/v8
+make "DESTDIR=" clean
+
+current directory: /home/ubuntu/APC/vendor/bundle/ruby/2.3.0/gems/therubyracer-0.12.2/ext/v8
+make "DESTDIR="
+compiling gc.cc
+compiling script.cc
+compiling value.cc
+compiling array.cc
+compiling accessor.cc
+compiling signature.cc
+compiling handles.cc
+compiling context.cc
+compiling locker.cc
+compiling constants.cc
+compiling stack.cc
+compiling v8.cc
+compiling constraints.cc
+compiling message.cc
+compiling rr.cc
+compiling date.cc
+compiling exception.cc
+compiling function.cc
+compiling init.cc
+compiling invocation.cc
+compiling heap.cc
+compiling object.cc
+compiling template.cc
+compiling primitive.cc
+compiling backref.cc
+compiling external.cc
+compiling string.cc
+compiling trycatch.cc
+linking shared-object v8/init.so
+
+current directory: /home/ubuntu/APC/vendor/bundle/ruby/2.3.0/gems/therubyracer-0.12.2/ext/v8
+make "DESTDIR=" install
+/usr/bin/install -m 0755 init.so ./.gem.20160617-496-sffy/v8

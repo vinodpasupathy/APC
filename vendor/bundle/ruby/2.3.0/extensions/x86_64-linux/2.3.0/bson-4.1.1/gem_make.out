@@ -1,0 +1,25 @@
+current directory: /home/ubuntu/APC/vendor/bundle/ruby/2.3.0/gems/bson-4.1.1/ext/bson
+/home/ubuntu/.rvm/rubies/ruby-2.3.1/bin/ruby -r ./siteconf20160617-496-18mfnp8.rb extconf.rb
+creating Makefile
+
+current directory: /home/ubuntu/APC/vendor/bundle/ruby/2.3.0/gems/bson-4.1.1/ext/bson
+make "DESTDIR=" clean
+
+current directory: /home/ubuntu/APC/vendor/bundle/ruby/2.3.0/gems/bson-4.1.1/ext/bson
+make "DESTDIR="
+compiling native.c
+In file included from native.c:21:0:
+native-endian.h:144:17: warning: ‘__bson_uint32_swap_slow’ defined but not used [-Wunused-function]
+ static uint32_t __bson_uint32_swap_slow(uint32_t v)
+                 ^
+native-endian.h:168:17: warning: ‘__bson_uint64_swap_slow’ defined but not used [-Wunused-function]
+ static uint64_t __bson_uint64_swap_slow(uint64_t v)
+                 ^
+native-endian.h:195:15: warning: ‘__bson_double_swap_slow’ defined but not used [-Wunused-function]
+ static double __bson_double_swap_slow(double v)
+               ^
+linking shared-object native.so
+
+current directory: /home/ubuntu/APC/vendor/bundle/ruby/2.3.0/gems/bson-4.1.1/ext/bson
+make "DESTDIR=" install
+/usr/bin/install -m 0755 native.so ./.gem.20160617-496-1fdeuw9
