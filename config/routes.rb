@@ -72,7 +72,8 @@ Rails.application.routes.draw do
   get "products/login_page"
   post "products/validate_login"
 
-  get "users/logout" 
+  get "products/logout"
+  post "products/logout"
 
   get 'products/new'
   

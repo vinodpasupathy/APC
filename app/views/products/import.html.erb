@@ -1,15 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+	
+    <title>Import & Export</title>
 
-<%= form_for [@product] ,:url=> {:controller=>"products", :action=>"import_process"} do |f| %>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+
+<%= button_to "New Account", products_new_path,:title=>"Create New Account" ,:class => "btn btn-default btn-primary", :method => :get %>
+
+<%= button_to "Log out", products_logout_path,:title=>"Logout...",:style=>"margin-left: 93%; margin-top: -4%",:class => "btn btn-default btn-primary"%>
 
 
-<%= f.file_field :file1,:required=>"true"%>
+<body>
 
-<button type="submit" class="btn btn-info" >Upload</button>
+	<center style="margin-top: 15%;">
 
+		<% if flash[:notice] %>
 
-<%end%>
+          <div style="color: green;" class="alert alert"><%= flash[:notice]%></div>
+
+        <% end %>
+
+	    <h1>Import & Export</h1><br>	
+
+<%= form_for [@product],:html=> { multipart: true },:url=> {:controller=>"products", :action=>"import_process"} do |f| %>
+
+           <span id="lblError" style="color: red;"></span><br />
+ 
+ 			<span class="btn btn-default btn-file"><%= f.file_field :file1,:accept=>".csv"%></span>
+
+			<button type="submit" class="btn btn-info" onclick="return ValidateExtension()" ><i class="fa fa-cloud-upload"></i>Upload</button>
+
+		<%end%>
+
+	</center>
+
+</body>	
 
 </html>
 
+ <script type="text/javascript">
+        
+    function ValidateExtension() {
+    
+        var allowedFiles = [".csv", ".xlsx", ".txt"];
+    
+        var fileUpload = document.getElementById("product_file1");
+    
+        var lblError = document.getElementById("lblError");
+    
+        var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+    
+            if (!regex.test(fileUpload.value.toLowerCase())) {
+        
+              lblError.innerHTML = "Please upload files having extensions: <b>" + allowedFiles.join(', ') + "</b> only.";
+              
+              return false;
+            }
+        
+              lblError.innerHTML = "Your file has been imported.Please wait few for minutes";
+
+              return true;
+            }
+
+    </script>

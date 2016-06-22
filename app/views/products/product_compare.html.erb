@@ -1,3 +1,4 @@
+
 <div class="body-wrap">
 
  	<div class="body-container">
@@ -42,7 +43,7 @@
 
                   <i class="fa fa-dot-circle-o" style="font-size: 15px; color: rgb(0, 102, 255);"></i>&nbsp;Indicates product differences.<br><br>
 
-                 	 <thead>
+                 	 
 
                     <%t=1%>
 
@@ -50,23 +51,23 @@
 
                    			<tr>
 
-                          <%if t < 5 %>
+                          <%if t < 6 %>
 
                             <td></td>
 
-                              <%@pros.each do |p|%>
-
-                                <%if t == 1 %>
+                              <%$pros.each do |p|%>
+                              <%if t == 1%>
+                              <td><%=link_to_if $pros.count > 2,"Remove item", products_product_compare_path(p.item_id)%></td>
+                                <%elsif t == 2 %>
                                      
                                   <%@temp=Manufacture.where(:id=>BSON::ObjectId.from_string(Product.where(:id=>p.id).pluck(:manu_id)[0])).pluck(i.to_sym)[0]%>
+<td style="background-color: #242d35; color:white;"><strong><%=@temp%></strong></td>
 
-                                  <td><strong><%=@temp%></strong></td>
-
-                                <%elsif t == 4%>
+                                <%elsif t == 5%>
 
                                   <td><%=image_tag p.image[0]%></td>    
 
-                                <%elsif t == 2%>
+                                <%elsif t == 3%>
                                                                    
                                  <td><%= link_to Product.where(:id=>p.id).pluck(i.to_sym)[0],products_product_desc_path(p.id)%></td>
                                  <%else%>
@@ -75,7 +76,7 @@
                                 
                               <%end%>
 
-                      </thead>     
+                      
                               
                           <%else%>
                           
@@ -83,7 +84,7 @@
 
                             <%@pp=[]%>
 
-                         <%@pros.each{|l| @pp << Product.where(:id=>l.id).pluck(:property)[0][i]}%>
+                         <%$pros.each{|l| @pp << Product.where(:id=>l.id).pluck(:property)[0][i]}%>
 
                             <%if @pp.uniq.count > 1%>
 
@@ -95,7 +96,7 @@
 
                           <%end%>
                           
-                              <%@pros.each do |p|%>
+                              <%$pros.each do |p|%>
 
                                 <%@temp=Product.where(:id=>p.id).pluck(:property)[0]%>
 

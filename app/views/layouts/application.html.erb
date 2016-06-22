@@ -12,14 +12,16 @@
     <title>Altius Product Catalog</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic' rel='stylesheet' type='text/css'>
     <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
+     <meta name="author" content="LayoutIt!">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js" type="text/javascript"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>    
-  </head>
-  <style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
 
+</head>
+
+<style>
+      
 .menu {
  float: right;
  position: absolute;
@@ -36,24 +38,22 @@ cursor: pointer;
 </style>
 <script type="text/javascript">
     
-    $('#PageRefresh').click(function() {
-
-              location.reload();
-
-    });
-
 </script>
 
- <Body onLoad=" LoadOnce()" >
+ <body>
+<div data-turbolinks="false">
+  <a href="/" data-turbolinks="true">Enabled</a>
+</div>
+
   <div id="header-container">
   <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
                 <div class="left-container">
                     <div class="menu-icon">
-                        <i class="fa fa-outdent" aria-hidden="true" style="color:rgb(6, 173, 195); font-size:28px;"></i>
+                    <i class="fa fa-outdent" aria-hidden="true" style="font-size: 33px; color: rgb(6, 173, 195);"></i>
                     </div>
-                    <div class="search-box">
+                     <div class="search-box">
                         <div class="form-group">
                           <%= form_tag(action: "search", :method => "get", id: "search-form") do %>
                             <input id="search" name="search"  class="form-control" type="text" placeholder="Search">
@@ -85,13 +85,14 @@ cursor: pointer;
 
    <%@pa=params[:id] || params[:format] %>
 
-              <%unless @pa == nil || params[:action] == "search" %>
+              <%unless @pa == nil || params[:action] == "search" || params[:action] == "product_compare" || params[:action] == "manu_index_product_compare" || params[:action] == "manu_category_compare" %>
 
                 <%@paq=BSON::ObjectId.from_string(@pa)%>
               
               <%end%>
               
               <%unless Product.where(:taxonomy_id=>@paq).present? || params[:action] == "search" %>
+              
             <div class="sidebar">
             
             <div id="scroll">
@@ -117,7 +118,7 @@ cursor: pointer;
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><i class="fa fa-building" aria-hidden="true" ></i> Manufacturer</a>
+                          <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><i class="fa fa-cogs" aria-hidden="true" ></i> Manufacturer</a>
                         </h4>
                     </div>
                     <div id="collapseThree" class="panel-collapse collapse ">
@@ -185,6 +186,7 @@ cursor: pointer;
   <%when "manu_index_sub_category"%>
   <%@property=Product.where(:taxonomy_id=>@paq).where(:manu_id=>BSON::ObjectId.from_string($manufacture.pluck(:id)[0]))%>
   <%end%>
+  
   <%@names=@property.pluck(:property).flatten.map{|p| p.keys}.flatten.flatten.uniq%>
   <%@pros=@property.pluck(:id,:property)%>
   <div class="filterbar">
@@ -223,15 +225,16 @@ cursor: pointer;
 
                                 <label>
 
-                                  <%=check_box_tag 'is[]', @id.flatten.uniq, false,{:onclick=>"chkcontrol();"}%>
+                                  <%=check_box_tag 'is[]', @id.map{|a| a }.flatten.uniq, false,{:onclick=>"chkcontrol();"}%>
 
-                                  <%=pp[1][n]%>
+                                     <%=pp[1][n]%>
 
                                 </label>
 
                               </div>
 
                               </li>
+
                               <%@check<< pp[1][n]%>
                               <%end%>
                               <%@id.clear%>
@@ -250,7 +253,7 @@ cursor: pointer;
             </div>
         </form>
              <div class="choose-container">
-                   <%=link_to "Choose Another Category", root_path, :class=>"btn btn-block btn-default hvr-sweep-to-right"%>
+                   <%=link_to "Choose Another Category",root_path, :class=>"btn btn-block btn-default hvr-sweep-to-right"%><!--Choose Another Category</button>-->
                </div>
               
           <div class="clearfix"></div>
@@ -259,9 +262,8 @@ cursor: pointer;
 
  
 
-
-
-<%= yield %>
+   <%= yield %>
+ 
 
 </body>
 </html>
@@ -282,12 +284,12 @@ cursor: pointer;
 <%= form_for :user,   :url=>{:controller=>"products", :action => "validate_login"} do | i |%> 
 <tr>
 <td style="text-align:center;"><%= i.label :name,"Username" %></td>
-<td ><%= i.text_field :name,:require=>true %></td>
+<td ><%= i.text_field :name,:require=>"" %></td>
 </tr>
 
 <tr>
 <td style="text-align:center;"><%= i.label :password%></td>
-<td><%= i.password_field :password,:require=>true %></td>
+<td><%= i.password_field :password,:require=>"" %></td>
 </tr>
 
 
@@ -317,6 +319,10 @@ $(".menu-icon").click(function(){
     $(".sidebar").toggleClass("show-nav");
   $(".body-wrap").toggleClass("full-width");  
 }); 
+$(".menu-icon").click(function(){
+    $(".filterbar").toggleClass("show-nav");
+  $(".row").toggleClass("full-width");  
+}); 
 </script>
 <script>
 
@@ -326,3 +332,4 @@ $(function(){
     });
 });
 </script>
+
