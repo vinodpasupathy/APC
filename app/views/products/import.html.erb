@@ -1,72 +1,96 @@
 <!DOCTYPE html>
+
 <html lang="en">
-<head>
+
+  <head>
 	
     <title>Import & Export</title>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
-	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-</head>
+  </head>
 
-<%= button_to "New Account", products_new_path,:title=>"Create New Account" ,:class => "btn btn-default btn-primary", :method => :get %>
+  <!--%= button_to "New Account", products_new_path,:title=>"Create New Account" ,:class => "btn btn-default btn-primary", :method => :get %-->
 
-<%= button_to "Log out", products_logout_path,:title=>"Logout...",:style=>"margin-left: 93%; margin-top: -4%",:class => "btn btn-default btn-primary"%>
+  <%= button_to "Log out", products_main_category_path,:title=>"Logout...",:style=>"margin-left: 93%;",:class => "btn btn-default btn-primary", method: "post" %>
 
+  <body>
 
-<body>
+	  <center style="margin-top: 15%;">
 
-	<center style="margin-top: 15%;">
+		  <% if flash[:notice] %>
 
-		<% if flash[:notice] %>
+        <div style="color: green;" class="alert alert"><%= flash[:notice]%></div>
 
-          <div style="color: green;" class="alert alert"><%= flash[:notice]%></div>
-
-        <% end %>
+      <% end %>
 
 	    <h1>Import & Export</h1><br>	
 
-<%= form_for [@product],:html=> { multipart: true },:url=> {:controller=>"products", :action=>"import_process"} do |f| %>
+      <%= form_for [@product],:url=> {:controller=>"products", :action=>"import_process"} do |f| %>
 
-           <span id="lblError" style="color: red;"></span><br />
+        <span id="lblError" style="color: orange;"></span><br />
  
- 			<span class="btn btn-default btn-file"><%= f.file_field :file1,:accept=>".csv"%></span>
+ 			  <span class="btn btn-default btn-file"><%= f.file_field :file1,:accept=>".csv"%></span>
 
-			<button type="submit" class="btn btn-info" onclick="return ValidateExtension()" ><i class="fa fa-cloud-upload"></i>Upload</button>
+			  <button type="submit" class="btn btn-info" onclick="return ValidateExtension()" ><i class="fa fa-cloud-upload"></i>Upload</button><br/><br/>
 
-		<%end%>
+		  <%end%>
 
-	</center>
+      <%= form_for [@product],:url=> {:controller=>"products", :action=>"export_cat" ,:format=>"xls"} do |i| %>
 
-</body>	
+        <%= i.select "id",options_from_collection_for_select(Taxon.order("main_cat_name ASC"), "id", "main_cat_name"),{:include_blank=>"Select Option"},:class=>"form-control",:required=>"true",:style=>"width: 21%; margin-left: -6%;"%>
+      
+                                                
+        <button style="margin-left: 23%; margin-top: -4%;" type="submit" class="btn btn-info"><i class="fa fa-cloud-download"></i>Download</button>
+
+      <%end%>
+
+      <%= form_for [@product],:url=> {:controller=>"products", :action=>"export_manu",:format=>"xls"} do |f| %>
+     
+        <%= f.select "id",options_from_collection_for_select(Manufacture.order("manu_name ASC"), "id", "manu_name" ),{:include_blank=>"Select Option"},:class=>"form-control",:required=>"true",:style=>"width: 21%; margin-left: -6%;"%>
+     
+         <button style="margin-left: 23%; margin-top: -4%;" type="submit" class="btn btn-info"><i class="fa fa-cloud-download"></i>Download</button>
+
+      <%end%>
+         
+      Format File:<%= link_to 'Download', products_import_format_path %>
+
+	  </center>
+
+  </body>	
 
 </html>
 
- <script type="text/javascript">
+<script type="text/javascript">
         
-    function ValidateExtension() {
+  function ValidateExtension() {
     
-        var allowedFiles = [".csv", ".xlsx", ".txt"];
+    var allowedFiles = [".csv", ".xlsx", ".txt"];
     
-        var fileUpload = document.getElementById("product_file1");
+    var fileUpload = document.getElementById("product_file1");
     
-        var lblError = document.getElementById("lblError");
+    var lblError = document.getElementById("lblError");
     
-        var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
+    var regex = new RegExp("([a-zA-Z0-9\s_\\.\-:])+(" + allowedFiles.join('|') + ")$");
     
-            if (!regex.test(fileUpload.value.toLowerCase())) {
-        
-              lblError.innerHTML = "Please upload files having extensions: <b>" + allowedFiles.join(', ') + "</b> only.";
+      if (!regex.test(fileUpload.value.toLowerCase())) {
+     
+        lblError.innerHTML = "Please upload files having extensions: <b>" + allowedFiles.join(', ') + "</b> only.";
               
-              return false;
-            }
+        return false;
+
+        }
         
-              lblError.innerHTML = "Your file has been imported.Please wait few for minutes";
+        lblError.innerHTML = "Your file has been imported.Please wait few for minutes";
 
-              return true;
-            }
+        return true;
 
-    </script>
+        }
+
+</script>
+
+

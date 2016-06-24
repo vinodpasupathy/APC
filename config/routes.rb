@@ -3,8 +3,12 @@ Rails.application.routes.draw do
   get  'products/import'
 
   post 'products/import_process'
-
- 
+  
+  get 'products/export_manu'
+  get 'products/export_cat'
+  post 'products/export_manu'
+  post 'products/export_cat'
+  get  'products/import_format' 
   get  'products/main_category'
 
   post 'products/main_category'
@@ -78,6 +82,8 @@ Rails.application.routes.draw do
   get 'products/new'
   
   post 'products/create'
+  get 'products/main'
+  post 'products/main'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

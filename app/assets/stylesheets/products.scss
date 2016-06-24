@@ -105,15 +105,7 @@ body {
   z-index:999;
   transition:all ease 0.5s;
   width:20%;
-}
-.sidebar1{ background-color:#242D35; height:100%;
-  position:fixed;
-  left:0;
-  top:83px;
-  z-index:999;
-  transition:all ease 0.5s;
-  width:20%;
-
+  overflow: auto;
 }
 
 .follow-container{width:100%; height:auto; padding:20px 20px; border-bottom:1px solid #495663; font-size:11px; color:#748ca5; line-height:18px; text-align:left; text-transform:uppercase;}
@@ -137,18 +129,6 @@ body {
 .sidebar .panel-body li:hover{background-color:#0f151a;}
 .sidebar .panel-body li a{color:#a0b9d2; line-height:14px; display:block; padding-top:10px; padding-bottom:10px; }
 
-.sidebar1 .panel{margin-bottom:0;}
-.sidebar1 .panel-default{border:0;}
-.sidebar1 .panel-default > .panel-heading{ border:0; border-radius:0; color:#fff; padding:0; background:#242D35; border-bottom:1px solid #495663; background-image:url(/assets/arrow.png); background-repeat:no-repeat; background-position:95% center; background-size:12px; transition: all ease 0.5s;}
-.sidebar1 .panel-default > .panel-heading .panel-title{ font-size:13px;}
-.sidebar1 .panel-default > .panel-heading .panel-title a{ display:block; padding:10px 15px; line-height:19px; color:#879CB2; font-size:12px;}
-.sidebar1 .panel-default > .panel-heading .panel-title a img{float:left; width:24px; margin-right:6px; }
-.sidebar1 .panel-default > .panel-heading:hover{background-color:#0F151A;}
-.sidebar1 .panel-body{ padding:0; border-radius:0; background-color:#171d22;}
-.sidebar1 .panel-body ul{margin:0; padding:0;}
-.sidebar1 .panel-body li{margin:0; padding:0; font-size:11px; color:#fff; padding-left:38px; background-image:url(/assets/sub-arrow.png); background-repeat:no-repeat; background-position:18px center;  background-size:10px; border-bottom:1px solid #495663;}
-.sidebar1 .panel-body li:hover{background-color:#0f151a;}
-.sidebar1 .panel-body li a{color:#a0b9d2; line-height:14px; display:block; padding-top:10px; padding-bottom:10px; }
 
 
 
@@ -158,8 +138,7 @@ body {
   top:83px;
   z-index:999;
   transition:all ease 0.5s;
-  width:20%;
-}
+  width:20%;}
 
 .filterbar .headbar{ width:100%; height:auto; font-size:15px; font-weight:bold; color:#95ACC3; line-height:20px; text-align:left; background-color:#21272c; padding:15px; }
 .filterbar .panel{margin-bottom:0;}
@@ -192,7 +171,7 @@ body {
 .compare-table tbody tr td { text-align:center; color:#333; font-size:13px;}
 
 
-.product-compare{width:100%; height:auto; overflow:auto; max-width:100%;}
+.product-compare{width:100%; height:auto; overflow:auto; max-width:100%; font-family: initial;}
 .product-compare table{border-left:1px solid #cfcfcf;}
 .product-compare thead{ height:30px; width:100%; background-color:#343d46; color:#fff; text-align:center; font-size:13px; }
 .product-compare thead tr{ background:none; text-align:center; border:0;}
@@ -204,11 +183,11 @@ body {
 
 
 
-.body-wrap{padding:15px; float:right; margin-top:83px; margin-bottom:0;  transition:all ease 0.5s; background-color:#E7E7E7; width:80%;}
+.body-wrap{padding:15px; float:right; margin-top:68px; margin-bottom:0;  transition:all ease 0.5s; background-color:#E7E7E7; width:80%;}
 .full-width{width:100%!important;}
 .body-container{width:100%; height:auto; background-color:#fff; border:1px solid #cfcfcf; border-radius:4px; overflow:hidden}
 .body-container .body-header{ width:100%; height:auto; color:#fff; padding:10px 12px; background-color:#06ADC3; line-height:15px; font-size:17px; font-weight:bold; }
-.body-container .body-content{width:100%; padding:13px 5px; min-height:76vh}
+.body-container .body-content{width:100%; padding:13px 5px; min-height:76vh}	
 .body-container .container{ width:100%!important;}
 
 
@@ -256,12 +235,11 @@ tr td{ font-size:12px; padding:5px!important; font-weight:normal; text-align:cen
 .category .image{width:20%;  float:left; border:2px solid #242D35; height:170px; overflow:hidden;}
 .category .image img {width:100%; height:100%}
 .category .content{ width:80%; float:left; padding:0;}
-.category .content .header{width:100%; height:auto; padding:7px 5px; font-size:13px; color:#fff; background-color:#242D35; line-height:15px; font-weight:bold; font-style:italic; text-indent:5px;} 
+.category .content .header{width:100%; height:auto; padding:7px 5px; font-size:13px; color:white; background-color:#242D35; line-height:15px; font-weight:bold; font-style:italic; text-indent:5px;} 
 .category .content ul{width:100%; padding:0; margin:0; padding-left:10px; padding-top:7px;}
 .category .content ul li{ list-style:none; background-image:url(/assets/blue-arrow.png); background-repeat:no-repeat; background-size:15px; line-height:24px; background-position:center left;  padding-left:20px; font-size:12px; color:#242D35; width:33%; display:block; float:left;}
 .category .content ul li a{ color:#242D35; text-decoration:none;}
 .category .content ul li a:hover{ color:#06ADC3;}
-
 .category-sub{width:100%; height:auto; background-color:#E7E8E9; margin-bottom:20px;}
 .category-sub .image{width:40%;  float:left; border:2px solid #242D35; height:120px; overflow:hidden;}
 .category-sub .image img {width:100%; height:100%}
@@ -405,3 +383,4 @@ tr td{ font-size:12px; padding:5px!important; font-weight:normal; text-align:cen
   -webkit-transform: scaleX(1);
   transform: scaleX(1);
 }
+

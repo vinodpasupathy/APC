@@ -1,10 +1,12 @@
 require 'spreadsheet'
 
 require 'roo'
+
 require 'csv'
+
 class Product
 
-  include Mongoid::Document
+  include Mongoid::Document 
   
   field :item_id
   
@@ -47,19 +49,33 @@ class Product
   index( { product_name: 1},{ background: true } )
   index( { glo_desc: 1},{ background: true } )
   index( { image: 1},{ background: true } )
-  
-  
+
+
   def self.bro(file)
-    
-    #@f = Spreadsheet.open(open(file.tempfile))
-    
+
+  case File.extname(file.original_filename)
+  
+  when ".csv" 
+
     @file=CSV.read(file.tempfile)
+  #byebug
+  when ".txt" 
+  
+    #byebug
+
+    @ff=File.open(file.tempfile, "r",:headers=>true)
     
-    #@f.worksheet(0).collect{|r| @file<<r.to_a}
+    @ss=@ff.collect{|p| p.encode!('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')}
+
+    @file=@ss.collect{|a|a.chomp.split(",").collect{|a| a.split("\t")}}
     
+  when ".xlsx" 
+  
+    @file=File.open(file.tempfile,"r").collect{|p| p.chomp.split("\t")}
     
-    #@file[0]
-    
+  end
+
+       
     @id=@file[0].index("ID")
     
     @gd=@file[0].index("GD")
@@ -81,7 +97,7 @@ class Product
     @db=@file[0].index("D Bullet")
     
     @tax=@file[0].index("T")
-    
+ #byebug
     @html=@file[0].select{|a| a.start_with?("H")}.map{|i| @file[0].index(i)}.compact
     
     @extra=@file[0].select{|a| a.start_with?("E")}.map{|i| @file[0].index(i)}.compact
@@ -95,7 +111,13 @@ class Product
     @tax_ids=[]
    
     @file.each do |line|
-   
+
+      if Manufacture.where(:manu_name=>line[@mn]).present?
+         @man=BSON::ObjectId.from_string(Manufacture.where(:manu_name=>line[@mn]).pluck(:id)[0])
+      end
+      next if Product.where(:manu_id=>@man).where(:mp_number=>line[@mpn]).present?
+     
+
       next if Product.where(:item_id=>line[@id]).present?
    
       next if line[0].match(/[0-9]/) == nil
@@ -182,4 +204,8 @@ class Product
   
   end
 
+#def as_indexed_json
+#    as_json(except: [:id, :_id])
+ # end
 end
+

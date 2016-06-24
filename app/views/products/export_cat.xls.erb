@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">ItemID</Data></Cell>
+        <Cell><Data ss:Type="String">Global Description</Data></Cell>
+        <Cell><Data ss:Type="String">Manufacturer</Data></Cell>
+        <Cell><Data ss:Type="String">Manufacturer logo</Data></Cell>
+        <Cell><Data ss:Type="String">Produ_Name</Data></Cell>
+        <Cell><Data ss:Type="String">Manufacture Part Number</Data></Cell>
+        <Cell><Data ss:Type="String">Taxonomy</Data></Cell>
+        <Cell><Data ss:Type="String">HTML1</Data></Cell>
+        <Cell><Data ss:Type="String">HTML2</Data></Cell>
+        <Cell><Data ss:Type="String">HTML3</Data></Cell>
+        <Cell><Data ss:Type="String">PDF1</Data></Cell>
+        <Cell><Data ss:Type="String">PDF2</Data></Cell>
+        <Cell><Data ss:Type="String">PDF3</Data></Cell>
+        <Cell><Data ss:Type="String">IMAGE1</Data></Cell>
+        <Cell><Data ss:Type="String">IMAGE2</Data></Cell>
+        <Cell><Data ss:Type="String">Long Description</Data></Cell> 
+        <Cell><Data ss:Type="String">Short Description</Data></Cell>
+        <Cell><Data ss:Type="String">Feature Copy</Data></Cell>
+        <Cell><Data ss:Type="String">Feature Bullet</Data></Cell>
+        <%unless @extra.nil?%>
+        <%@extra.flatten.each do |p|%>
+        <Cell><Data ss:Type="String"><%=p%></Data></Cell>
+        <%end%>
+        <%end%>
+        <%t=0%>
+        <%156.times do|i|%>
+        <%t=t+1%>
+        <%y1="Attrname"+"#{t}" %>
+        <%y2="Attrvalue"+"#{t}" %>
+        <%y3="Attrunit"+"#{t}" %>
+        <Cell><Data ss:Type="String"><%=y1%></Data></Cell>
+        <Cell><Data ss:Type="String"><%=y2%></Data></Cell>
+        <Cell><Data ss:Type="String"><%=y3%></Data></Cell>
+        <%end%>
+     </Row>
+        <% $export_cat.each do |i| %>
+          <Row>
+            <Cell><Data ss:Type="String"><%= i.item_id %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.glo_desc%></Data></Cell>
+            <Cell><Data ss:Type="String"><%= Manufacture.where(:id=>i.manu_id).pluck(:manu_name)[0]%></Data></Cell>
+            <Cell><Data ss:Type="String"><%= Manufacture.where(:id=>i.manu_id).pluck(:manu_logo)[0]%></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.product_name %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.mp_number%></Data></Cell>
+            <%@tax=[Taxon.where(:id=>i.taxon_id).pluck(:main_cat_name)[0],[Taxonomy.where(:id.in=>i.path).pluck(:sub_cat_name)]].flatten.join(">")%>
+            <Cell><Data ss:Type="String"><%= @tax%></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.html[0]%></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.html[1]%></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.html[2]%></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.pdf[0] %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.pdf[1] %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.pdf[2] %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.image[0] %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.image[1] %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.d_long %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.d_short%></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.d_bullet %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= i.d_copy%></Data></Cell>
+            <%unless @extra.nil?%>
+            <%i.extra.map{|w| w.values}.flatten.each do |p|%>
+            <Cell><Data ss:Type="String"><%= p[0] %></Data></Cell>
+            <Cell><Data ss:Type="String"><%= p[1] %></Data></Cell>
+            <%end%>
+            <%end%>
+            <%@attr = i.property.flatten.each_slice(2).to_a.map{|p| p.join("  ").split("  ")}%>
+            <%@attr.each do |cont|%>
+            <Cell><Data ss:Type="String"><%=cont[0]%></Data></Cell>
+            <Cell><Data ss:Type="String"><%=cont[1]%></Data></Cell>
+            <Cell><Data ss:Type="String"><%=cont[2]%></Data></Cell>
+            <%end%>
+          </Row>
+        <% end %>
+     </Table>
+  </Worksheet>
+</Workbook>

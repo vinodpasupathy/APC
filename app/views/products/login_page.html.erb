@@ -1,0 +1,23 @@
+
+<center>  <%=image_tag("/assets/logo.png" )%></center><br>
+<br><br>
+<center><table>
+
+<%= form_for :user,   :url=>{:controller=>"products", :action => "validate_login"} do | i |%>
+<tr>
+<td style="text-align:center;"><%= i.label :name,"Username" %></td>
+<td ><%= i.text_field :name,:require=>"" %></td>
+</tr>
+
+<tr>
+<td style="text-align:center;"><%= i.label :password%></td>
+<td><%= i.password_field :password,:require=>"" %></td>
+</tr>
+
+
+
+<tr>
+<td><%= i.submit "Sign_In",:class=>"btn btn-primary"%></td>
+</tr>
+<% end %>
+</table></center>

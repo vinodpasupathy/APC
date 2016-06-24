@@ -1,10 +1,12 @@
 class ProductsController < ApplicationController
 
 skip_before_filter :verify_authenticity_token, only: [:product_compare,:manu_category_compare,:manu_index_product_compare]
-skip_before_action :check_session, :only=>[:main_category,:sub_category,:product_desc,:product_compare,:manu_category,:manu_category_desc,:manu_category_compare,:manu_index_category, :manu_index_sub_category, :manu_index_product_desc,:manu_index_product_compare,:search,:search_desc,:login,:validate_login]
+skip_before_action :check_session, :only=>[:main_category,:sub_category,:product_desc,:product_compare,:manu_category,:manu_category_desc,:manu_category_compare,:manu_index_category, :manu_index_sub_category, :manu_index_product_desc,:manu_index_product_compare,:search,:search_desc,:login_page,:validate_login,:import,:export_manu,:export_cat,:import_format]
 
 require 'will_paginate/array'
-
+def main
+ redirect_to root_path
+end
 def new
   @user=User.new
   render :layout=>false
@@ -65,6 +67,35 @@ end
 
   end
 
+
+  def import_format
+ 
+     send_file Rails.root.join('public/files', 'sample.xls'), :type=>"application/xls", :x_sendfile=>true
+
+ end
+
+  def export_cat
+
+    ss=params[:product][:id]
+    
+    $export_cat=Product.where(:taxon_id=>BSON::ObjectId("#{ss}"))
+    unless $export_cat.pluck(:extra)[0].nil?
+    @extra=$export_cat.pluck(:extra)[0].keys
+    end
+  
+    @taxon=Taxon.all
+
+  end  
+
+ def export_manu
+ #byebug
+ ss=params[:product][:id]
+    
+    $export_manu=Product.where(:manu_id=>BSON::ObjectId("#{ss}"))
+    unless $export_manu.pluck(:extra)[0].nil?
+    @extra=$export_manu.pluck(:extra)[0].keys
+    end
+ end
 
   def main_category
 
@@ -374,7 +405,7 @@ def search
 
 @product3= Product.where(product_name: /.*#{@search}*./i)
 
-$prod=@product3.collect{|i| i.id}
+$prod=@product3
 @product=@product3.paginate(:page => params[:page], :per_page => 10)
 
 end
