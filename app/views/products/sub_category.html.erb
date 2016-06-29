@@ -47,8 +47,19 @@
                                     <div class="category">
                                 	    
                                         <div class="image">
+  <%@id=i.id%>
+                            <%unless Product.where(:taxonomy_id=>BSON::ObjectId.from_string(@id)).present?%>
+<%loop do%>
+<%@iid=Taxonomy.where(:parent_id=>BSON::ObjectId.from_string(@id))%>
+<%@id=@iid.pluck(:id)[0]%>
 
-                            <%@im=Product.where(:taxon_id=>BSON::ObjectId.from_string(i.taxon_id)).pluck(:image).flatten[0]%>
+<%break if Product.where(:taxonomy_id=>BSON::ObjectId.from_string(@id)).present?%>
+<%end%>
+
+<%@im=Product.where(:taxonomy_id=>BSON::ObjectId.from_string(@iid.pluck(:id)[0])).pluck(:image).flatten[0]%>
+<%else%>
+<%@im=Product.where(:taxonomy_id=>BSON::ObjectId.from_string(@id)).pluck(:image).flatten[0]%>
+<%end%>
                                             <%if @im.blank?%>
  
                                                 <img src="/assets/not.png">

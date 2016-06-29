@@ -58,7 +58,8 @@ class Product
   case File.extname(file.original_filename)
   
   when ".csv" 
-   @file = File.open(file.tempfile,"r").collect{|o| o.chomp.split("\t")}
+@file = File.open(file.tempfile,"r").collect{|p| p.chomp.split("\t")}  
+#@file = File.open(file.tempfile,"r").collect{|o| o.chomp.split("\t")}
 #    @file=CSV.read(file.tempfile)
   when ".txt" 
   
@@ -75,7 +76,8 @@ class Product
     @file=File.open(file.tempfile,"r").collect{|p| p.chomp.split("\t")}
     
   end
-
+   @head=["ID", "M Number", "M Name", "M Logo", "GD", "T", "H1", "P1", "P2", "I1", "D Copy", "D Bullet", "D Long", "D Short", "Name", "A1", "A2", "A3"]
+if  @file.collect{|p| @head.include?(p)}.count(true) == @head.count
        
     @id=@file[0].index("ID")
     
@@ -218,7 +220,7 @@ class Product
         @tax_ids.clear
   
     end
-  
+  end
   end
 
 #def as_indexed_json
