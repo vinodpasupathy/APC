@@ -4,11 +4,11 @@ production:
     default:
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
-      database: fileprocess_production
+      database: fileprocess_production_full
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
-        - 172.31.20.117:27017
+        - 192.168.0.134:27017
       options:
 development:
   # Configure available database clients. (required)
@@ -17,11 +17,11 @@ development:
     default:
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
-      database: fileprocess_development
+      database: fileprocess_development_full
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
-        - 172.31.20.117:27017
+        - 192.168.0.134:27017
       options:
         # Change the default write concern. (default = { w: 1 })
         # write:
@@ -145,9 +145,9 @@ development:
 test:
   clients:
     default:
-      database: fileprocess_test
+      database: fileprocess_test_full
       hosts:
-        - 172.31.20.117:27017
+        - 192.168.0.134:27017
       options:
         read:
           mode: :primary

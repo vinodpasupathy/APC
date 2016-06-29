@@ -98,8 +98,7 @@ cursor: pointer;
                     <div id="collapseOne" class="panel-collapse collapse">
                         <div class="panel-body">
                             <ul>
-                                 <%@taxon=Taxon.all%>
-                                 <%@taxon.order("main_cat_name ASC").map do |i|%>
+                                 <%Taxon.all.order("main_cat_name ASC").map do |i|%>
                                 <li><%= link_to i.main_cat_name,products_sub_category_path(i) %> </li>
                                   <%end%>
                             </ul>
@@ -116,8 +115,7 @@ cursor: pointer;
                     <div id="collapseThree" class="panel-collapse collapse ">
                         <div class="panel-body">
                             <ul>
-                                <%@manufacture=Manufacture.all%>
-                                <%@manufacture.order("manu_name ASC").map do |i|%>
+                                <%Manufacture.all.order("manu_name ASC").map do |i|%>
                                   <li><%=link_to i.manu_name,products_manu_category_path(i) %></li>                                                           
                                   <%end%>
                             </ul>
@@ -209,15 +207,14 @@ cursor: pointer;
                             <%@pros.each do |pp|%>
                             <%next if pp[1][n] == nil%>
                             <%next if @check.include?(pp[1][n])%>
-                            <%@id=[]%>
-                            <%@pros.collect{|o| @id << o[0] if o[1].to_a.include?({n=>o[1][n]}.flatten )}%>
+                            <%@id=@property.where(:property_extra=>{n=>pp[1][n]}).pluck(:id)%>
                                                            <li>
 
                               <div class="checkbox">
 
                                 <label>
 
-                                  <%=check_box_tag 'is[]', @id.map{|a| a }.flatten.uniq, false,{:onclick=>"chkcontrol();"}%>
+                                  <%=check_box_tag 'is[]', @id, false,{:onclick=>"chkcontrol();"}%>
 
                                      <%=pp[1][n]%>
 
@@ -258,6 +255,10 @@ cursor: pointer;
  
 <div data-turbolinks="false">
   <a href="/" data-turbolinks="true"></a>
+</div>
+
+<div data-turbolinks="false">
+  <a href=":" data-turbolinks="true"></a>
 </div>
 
 </body>

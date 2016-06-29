@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
 
 skip_before_filter :verify_authenticity_token, only: [:product_compare,:manu_category_compare,:manu_index_product_compare]
-skip_before_action :check_session, :only=>[:main_category,:sub_category,:product_desc,:product_compare,:manu_category,:manu_category_desc,:manu_category_compare,:manu_index_category, :manu_index_sub_category, :manu_index_product_desc,:manu_index_product_compare,:search,:search_desc,:login_page,:validate_login,:import,:export_manu,:export_cat,:import_format]
+#skip_before_action :check_session, :only=>[:main_category,:sub_category,:product_desc,:product_compare,:manu_category,:manu_category_desc,:manu_category_compare,:manu_index_category, :manu_index_sub_category, :manu_index_product_desc,:manu_index_product_compare,:search,:search_desc,:login_page,:validate_login,:import,:export_manu,:export_cat,:import_format]
 
 require 'will_paginate/array'
 def main

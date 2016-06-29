@@ -4,6 +4,8 @@ require 'roo'
 
 require 'csv'
 
+require 'byebug'
+
 class Product
 
   include Mongoid::Document 
@@ -42,6 +44,8 @@ class Product
   
   field :path
 
+  field :property_extra
+
   index( { manu_id: 1},{ background: true } )
   index( { taxon_id: 1},{ background: true } )
   index( { id: 1},{unique: true} )
@@ -50,15 +54,12 @@ class Product
   index( { glo_desc: 1},{ background: true } )
   index( { image: 1},{ background: true } )
 
-
   def self.bro(file)
-
   case File.extname(file.original_filename)
   
   when ".csv" 
-
-    @file=CSV.read(file.tempfile)
-  #byebug
+   @file = File.open(file.tempfile,"r").collect{|o| o.chomp.split("\t")}
+#    @file=CSV.read(file.tempfile)
   when ".txt" 
   
     #byebug
@@ -97,7 +98,7 @@ class Product
     @db=@file[0].index("D Bullet")
     
     @tax=@file[0].index("T")
- #byebug
+
     @html=@file[0].select{|a| a.start_with?("H")}.map{|i| @file[0].index(i)}.compact
     
     @extra=@file[0].select{|a| a.start_with?("E")}.map{|i| @file[0].index(i)}.compact
@@ -109,16 +110,11 @@ class Product
     @attrstartloc=@file[0].index{|i| i.starts_with?("A")}
     
     @tax_ids=[]
+    
+    $upcount,$newcount=[],[];
    
     @file.each do |line|
 
-      if Manufacture.where(:manu_name=>line[@mn]).present?
-         @man=BSON::ObjectId.from_string(Manufacture.where(:manu_name=>line[@mn]).pluck(:id)[0])
-      end
-      next if Product.where(:manu_id=>@man).where(:mp_number=>line[@mpn]).present?
-     
-
-      next if Product.where(:item_id=>line[@id]).present?
    
       next if line[0].match(/[0-9]/) == nil
    
@@ -136,8 +132,8 @@ class Product
    
       @taxon_id=Taxon.where(:main_cat_name=>@taxonomy[0]).pluck(:id)[0]
    
-      @taxonomy[1..-1].each do |tax|
-         
+     @taxonomy[1..-1].each do |tax|
+
         if Taxon.where(:main_cat_name=>taxon).present?
         
           @p_id=Taxon.where(:main_cat_name=>taxon).pluck(:id)[0]
@@ -191,13 +187,34 @@ class Product
           
         @attribute_data = @attri_data.reject{|p| p[0]==nil || p[1]==nil}.map{|p| [p[0],p[1..-1].compact.join('  ')]}
 
+        @attribute_data1 = @attri_data.reject{|p| p[0]==nil || p[1]==nil}.map{|p| {p[0]=>p[1..-1].compact.join('  ')} }
+
+        if Manufacture.where(:manu_name=>line[@mn]).present?
+  
+          @man=BSON::ObjectId.from_string(Manufacture.where(:manu_name=>line[@mn]).pluck(:id)[0])
+
+        end
+
+        if Product.where(:manu_id=>@man).where(:mp_number=>line[@mpn]).present?
+
+         Product.where(:manu_id=>@man).where(:mp_number=>line[@mpn]).delete
         @product=Product.new(:item_id=>line[@id],:glo_desc=>line[@gd],:product_name=>line[@pn],:mp_number=>line[@mpn],
         :taxon_id=>@taxon_id,:taxonomy_id=>@taxonomy_id,:manu_id=>@manu_id,:html=>@html_link,
         :pdf=>@pdf_link,:image=>@img_link,:d_long=>line[@dl],:d_short=>line[@ds],
-        :d_bullet=>line[@db],:d_copy=>line[@dc],:extra=>@extra_data,:property=>Hash[*@attribute_data.flatten],:path=>@tax_ids.flatten.compact.uniq.sort)
+        :d_bullet=>line[@db],:d_copy=>line[@dc],:extra=>@extra_data,:property=>Hash[*@attribute_data.flatten],:path=>@tax_ids.flatten.compact.uniq.sort,:property_extra=>@attribute_data1)
+
+        @product.save(validate=>true)
+        $upcount << @product
+
+        else
+        @product=Product.new(:item_id=>line[@id],:glo_desc=>line[@gd],:product_name=>line[@pn],:mp_number=>line[@mpn],
+        :taxon_id=>@taxon_id,:taxonomy_id=>@taxonomy_id,:manu_id=>@manu_id,:html=>@html_link,
+        :pdf=>@pdf_link,:image=>@img_link,:d_long=>line[@dl],:d_short=>line[@ds],
+        :d_bullet=>line[@db],:d_copy=>line[@dc],:extra=>@extra_data,:property=>Hash[*@attribute_data.flatten],:path=>@tax_ids.flatten.compact.uniq.sort,:property_extra=>@attribute_data1)
   
         @product.save(validate=>true)
-  
+        $newcount << @product
+        end
         @tax_ids.clear
   
     end

@@ -48,15 +48,14 @@
                                 	    
                                         <div class="image">
 
-                            <%@im=Product.where(:taxonomy_id=>i.id).pluck(:image).flatten[0]%>
-                                    	   
-                                            <%if @ima.blank?%>
+                            <%@im=Product.where(:taxon_id=>BSON::ObjectId.from_string(i.taxon_id)).pluck(:image).flatten[0]%>
+                                            <%if @im.blank?%>
  
                                                 <img src="/assets/not.png">
  
                                             <%else%>
  
-                                                <%=image_tag @ima%>
+                                                <%=image_tag @im%>
  
                                             <%end%>
                                       

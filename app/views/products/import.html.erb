@@ -27,7 +27,10 @@
         <div style="color: green;" class="alert alert"><%= flash[:notice]%></div>
 
       <% end %>
-
+<%unless $newcount.count == 0 && $upcount.count == 0%>
+<br>
+You have succesfully imported. "<%=$newcount.count%>" sku's newly added and "<%=$upcount.count%>" sku's overwrited.<br>
+<%end%>
 	    <h1>Import & Export</h1><br>	
 
       <%= form_for [@product],:url=> {:controller=>"products", :action=>"import_process"} do |f| %>
@@ -39,7 +42,6 @@
 			  <button type="submit" class="btn btn-info" onclick="return ValidateExtension()" ><i class="fa fa-cloud-upload"></i>Upload</button><br/><br/>
 
 		  <%end%>
-
       <%= form_for [@product],:url=> {:controller=>"products", :action=>"export_cat" ,:format=>"xls"} do |i| %>
 
         <%= i.select "id",options_from_collection_for_select(Taxon.order("main_cat_name ASC"), "id", "main_cat_name"),{:include_blank=>"Select Option"},:class=>"form-control",:required=>"true",:style=>"width: 21%; margin-left: -6%;"%>
@@ -64,7 +66,8 @@
   </body>	
 
 </html>
-
+<%$newcount.clear%>
+<%$upcount.clear%>
 <script type="text/javascript">
         
   function ValidateExtension() {
